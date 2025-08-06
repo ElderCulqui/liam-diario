@@ -31,7 +31,6 @@ services:
     networks:
       - local_network
   node_liam_diario:
-    platform: linux/arm64/v8
     image: node:22-alpine
     container_name: node_liam_diario
     working_dir: /app

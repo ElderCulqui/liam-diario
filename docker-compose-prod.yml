@@ -1,0 +1,45 @@
+version: '3.9'
+
+networks:
+  mateo_network:
+    driver: bridge
+
+volumes:
+  root_liam_diario_prod:
+
+services:
+  web_liam_diario:
+    image: webdevops/php-nginx:8.2-alpine
+    container_name: web_liam_diario_prod
+    working_dir: /app
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app:ro
+      - root_liam_diario_prod:/root
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/public
+      # Agrega aquí otras variables de entorno necesarias para tu app
+    networks:
+      - mateo_network
+    command: >
+      sh -c "composer install --no-dev --optimize-autoloader &&
+             php artisan migrate --force &&
+             php artisan config:cache &&
+             php artisan route:cache &&
+             php artisan view:cache"
+
+  node_liam_diario:
+    platform: linux/arm64/v8
+    image: node:22-alpine
+    container_name: node_liam_diario_prod
+    working_dir: /app
+    restart: always
+    volumes:
+      - .:/app:ro
+    command: >
+      sh -c "npm ci --omit=dev &&
+             npm run build"
+    networks:
+      - mateo_network
