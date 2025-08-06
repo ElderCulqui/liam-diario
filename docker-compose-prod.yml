@@ -39,7 +39,7 @@ services:
     volumes:
       - .:/app:ro
     command: >
-      sh -c "npm ci --omit=dev &&
+      sh -c "npm install &&
              npm run build"
     networks:
       - mateo_network
