@@ -11,7 +11,12 @@ class Binnacle extends Model
         'binnacle_type_id',
         'user_id',
         'description',
+        'date_register',
         'notes',
+    ];
+
+    protected $casts = [
+        'date_register' => 'datetime',
     ];
 
     public function binnacleType(): BelongsTo

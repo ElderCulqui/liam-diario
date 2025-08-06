@@ -6,6 +6,7 @@ use App\Filament\Resources\BinnacleResource\Pages;
 use App\Filament\Resources\BinnacleResource\RelationManagers;
 use App\Models\Binnacle;
 use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -32,6 +33,7 @@ class BinnacleResource extends Resource
                 ->preload()
                 ->required(),
                 TextInput::make('description')->nullable()->maxLength(255),
+                DateTimePicker::make('date_register')->required()->default(now()),
                 Textarea::make('notes')->nullable()->maxLength(500),
             ]);
     }
@@ -44,9 +46,9 @@ class BinnacleResource extends Resource
                 TextColumn::make('user.name')->label('User'),
                 TextColumn::make('description'),
                 TextColumn::make('notes'),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->label('Created At')
+                TextColumn::make('date_register')
+                    ->dateTime('d/m/Y h:i a')
+                    ->label('Register date')
                     ->sortable(),
             ])
             ->filters([
