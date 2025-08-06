@@ -1,0 +1,53 @@
+version: '3.9'
+
+networks:
+  local_network:
+    external: true
+    name: local_network
+
+volumes:
+  root_liam_diario:
+
+services:
+  web_liam_diario:
+    image: webdevops/php-nginx:8.2-alpine
+    container_name: web_liam_diario
+    working_dir: /app
+    restart: on-failure
+    expose:
+      - "80"
+    ports:
+      - "4300:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 5g
+    volumes:
+      - .:/app:delegated
+      - root_liam_diario:/root
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/public
+    networks:
+      - local_network
+  node_liam_diario:
+    platform: linux/arm64/v8
+    image: node:22-alpine
+    container_name: node_liam_diario
+    working_dir: /app
+    restart: always
+    expose:
+      - "3009"
+    ports:
+      - "3009:3009"
+    volumes:
+      - .:/app:rw
+    command: >
+      sh -c "cd /app && npm install && npm run dev"
+    networks:
+      - local_network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 5g
