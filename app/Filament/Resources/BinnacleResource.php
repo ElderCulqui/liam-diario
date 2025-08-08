@@ -51,6 +51,7 @@ class BinnacleResource extends Resource
                     ->label('Register date')
                     ->sortable(),
             ])
+            ->defaultSort('date_register', 'desc')
             ->filters([
                 //
             ])
