@@ -21,6 +21,12 @@ class BinnacleTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = 'Tipo de Bitácora';
+
+    protected static ?string $pluralModelLabel = 'Tipos de Bitácora';
+
+    protected static ?string $navigationLabel = 'Tipos de Bitácora';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -29,7 +35,8 @@ class BinnacleTypeResource extends Resource
                     ->required()
                     ->email()
                     ->unique(BinnacleType::class, 'name', ignoreRecord: true)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Nombre'),
             ]);
     }
 
@@ -38,7 +45,7 @@ class BinnacleTypeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name'),
+                TextColumn::make('name')->label('Nombre'),
             ])
             ->filters([
                 //

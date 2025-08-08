@@ -23,18 +23,34 @@ class BinnacleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = 'Bitácora';
+
+    protected static ?string $pluralModelLabel = 'Bitácoras';
+
+    protected static ?string $navigationLabel = 'Bitácoras';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('binnacle_type_id')
                 ->relationship('binnacleType', 'name')
+                ->label('Tipo de bitácora')
                 ->searchable()
                 ->preload()
                 ->required(),
-                TextInput::make('description')->nullable()->maxLength(255),
-                DateTimePicker::make('date_register')->required()->default(now()),
-                Textarea::make('notes')->nullable()->maxLength(500),
+                TextInput::make('description')
+                ->label('Descripción')
+                ->nullable()
+                ->maxLength(255),
+                DateTimePicker::make('date_register')
+                ->label('Fecha de registro')
+                ->required()
+                ->default(now()),
+                Textarea::make('notes')
+                ->label('Notas')
+                ->nullable()
+                ->maxLength(500),
             ]);
     }
 
@@ -42,13 +58,13 @@ class BinnacleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('binnacleType.name')->label('Type'),
-                TextColumn::make('user.name')->label('User'),
-                TextColumn::make('description'),
-                TextColumn::make('notes'),
+                TextColumn::make('binnacleType.name')->label('Tipo'),
+                TextColumn::make('user.name')->label('Usuario'),
+                TextColumn::make('description')->label('Descripción'),
+                TextColumn::make('notes')->label('Notas'),
                 TextColumn::make('date_register')
                     ->dateTime('d/m/Y h:i a')
-                    ->label('Register date')
+                    ->label('Fecha de registro')
                     ->sortable(),
             ])
             ->defaultSort('date_register', 'desc')

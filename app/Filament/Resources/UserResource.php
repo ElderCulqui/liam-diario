@@ -22,20 +22,29 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = 'Usuario';
+
+    protected static ?string $pluralModelLabel = 'Usuarios';
+
+    protected static ?string $navigationLabel = 'Usuarios';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required()
+                    ->label('Nombre')
                     ->maxLength(255),
                 TextInput::make('email')
                     ->required()
                     ->email()
+                    ->label('Correo Electrónico')
                     ->unique(User::class, 'email', ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('password')
                     ->password()
+                    ->label('Contraseña')
                     ->required(fn (Forms\Get $get) => $get('id') === null)
                     ->dehydrateStateUsing(fn ($state) => !empty($state) ? bcrypt($state) : null)
                     ->dehydrated(fn ($state) => !empty($state))
@@ -43,6 +52,7 @@ class UserResource extends Resource
                     ->confirmed(),
                 TextInput::make('password_confirmation')
                     ->password()
+                    ->label('Confirmar Contraseña')
                     ->required(fn (Forms\Get $get) => $get('id') === null)
                     ->maxLength(255)
                     ->label('Confirmar Contraseña')
@@ -55,8 +65,8 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name'),
-                TextColumn::make('email')
+                TextColumn::make('name')->label('Nombre'),
+                TextColumn::make('email')->label('Correo Electrónico'),
             ])
             ->filters([
                 //
